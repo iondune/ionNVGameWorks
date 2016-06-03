@@ -207,7 +207,7 @@ int main()
 		BackBuffer->ClearColorAndDepth();
 
 		SceneManager->DrawAll();
-
+		BackBuffer->Bind();
 
 		GFSDK_SSAO_InputData_GL Input;
 		Input.DepthData.DepthTextureType = GFSDK_SSAO_HARDWARE_DEPTHS;
