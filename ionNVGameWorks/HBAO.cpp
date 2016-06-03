@@ -2,6 +2,7 @@
 #include "HBAO.h"
 
 #include <ionGraphicsGL/CTexture.h>
+#include <ionGraphicsGL/CFrameBuffer.h>
 #include <GFSDK_SSAO.h>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -64,9 +65,15 @@ namespace ion
 				Input.NormalData.WorldToViewMatrix.Layout = GFSDK_SSAO_ROW_MAJOR_ORDER;
 			}
 
-			GFSDK_SSAO_Output_GL Output;
-			GFSDK_SSAO_Status status;
 
+			GFSDK_SSAO_Output_GL Output;
+			if (FrameBuffer)
+			{
+				SharedPointer<ion::Graphics::GL::CFrameBuffer> FrameBufferRaw = std::dynamic_pointer_cast<ion::Graphics::GL::CFrameBuffer>(FrameBuffer);
+				Output.OutputFBO = FrameBufferRaw->Handle;
+			}
+
+			GFSDK_SSAO_Status status;
 			status = Context->RenderAO(Input, Params, Output);
 		}
 
