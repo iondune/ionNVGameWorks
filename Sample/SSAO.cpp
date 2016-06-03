@@ -118,7 +118,7 @@ int main()
 	Camera->SetPosition(vec3f(0, 3, -5));
 	Camera->SetFocalLength(0.4f);
 	Camera->SetNearPlane(0.1f);
-	Camera->SetFarPlane(50.f);
+	Camera->SetFarPlane(5000.f);
 	RenderPass->SetActiveCamera(Camera);
 
 	CCameraController * Controller = new CCameraController(Camera);
