@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HBAO.h" />
+    <ClInclude Include="ionNvidiaGameWorks.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{23BCC585-AEA7-4491-84EC-9A5DC1828AE5}</ProjectGuid>

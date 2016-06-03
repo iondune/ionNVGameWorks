@@ -17,7 +17,12 @@
     <Import Project="$(VisualStudioDir)\Projects\ionEngine\Properties\Application.props" />
   </ImportGroup>
   <PropertyGroup>
-    <IncludePath>C:\HBAOPlus\include;$(IncludePath)</IncludePath>
+    <IncludePath>
+      ;C:\HBAOPlus\include;
+      ;$(SolutionDir)\ionNVGameWorks;
+      ;$(IncludePath);
+    </IncludePath>
+    <IncludePath>;$(IncludePath)</IncludePath>
     <LibraryPath>C:\HBAOPlus\lib;$(LibraryPath)</LibraryPath>
     <LibraryPath Condition="'$(Configuration)'=='Debug'">
       ;$(SolutionDir)\x64\Debug;

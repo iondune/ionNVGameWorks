@@ -6,5 +6,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HBAO.h" />
+    <ClInclude Include="ionNvidiaGameWorks.h" />
   </ItemGroup>
 </Project>

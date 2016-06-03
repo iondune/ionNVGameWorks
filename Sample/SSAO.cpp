@@ -5,13 +5,9 @@
 #include <ionScene.h>
 #include <ionApplication.h>
 #include <ionGUI.h>
-#include <ionGraphicsGL/CTexture.h>
+#include <ionNvidiaGameWorks.h>
 
 #include <random>
-
-#include <GFSDK_SSAO.h>
-#include <glad/glad.h>
-#include <glm/gtc/type_ptr.hpp>
 
 using namespace ion;
 using namespace ion::Scene;
@@ -22,9 +18,6 @@ float lerp(float const a, float const b, float const f)
 {
 	return a + f * (b - a);
 }
-
-GFSDK_SSAO_GLFunctions ionGLFunctions();
-
 
 int main()
 {
@@ -40,6 +33,8 @@ int main()
 	SingletonPointer<CSceneManager> SceneManager;
 	SingletonPointer<CAssetManager> AssetManager;
 	SingletonPointer<CGUIManager> GUIManager;
+	SingletonPointer<ion::Nvidia::HBAO> HBAO;
+
 
 	GraphicsAPI->Init(new Graphics::COpenGLImplementation());
 	WindowManager->Init(GraphicsAPI);
@@ -59,15 +54,7 @@ int main()
 	SharedPointer<IRenderTarget> BackBuffer = Context->GetBackBuffer();
 	BackBuffer->SetClearColor(color3f(0.3f));
 
-	GFSDK_SSAO_CustomHeap CustomHeap;
-	CustomHeap.new_ = ::operator new;
-	CustomHeap.delete_ = ::operator delete;
-
-	GFSDK_SSAO_Status status;
-	GFSDK_SSAO_GLFunctions functions = ionGLFunctions();
-	GFSDK_SSAO_Context_GL* pAOContext = nullptr;
-	status = GFSDK_SSAO_CreateContext_GL(&pAOContext, &functions, &CustomHeap);
-	assert(status == GFSDK_SSAO_OK);
+	HBAO->Init();
 
 	SharedPointer<IFrameBuffer> FrameBuffer = Context->CreateFrameBuffer();
 
@@ -93,7 +80,6 @@ int main()
 		Log::Error("Frame buffer not valid!");
 	}
 
-	SharedPointer<ion::Graphics::GL::CTexture2D> SceneDepthRaw = std::dynamic_pointer_cast<ion::Graphics::GL::CTexture2D>(SceneDepth);
 
 	/////////////////
 	// Load Assets //
@@ -120,6 +106,7 @@ int main()
 	Camera->SetNearPlane(0.1f);
 	Camera->SetFarPlane(5000.f);
 	RenderPass->SetActiveCamera(Camera);
+
 
 	CCameraController * Controller = new CCameraController(Camera);
 	Controller->SetTheta(15.f * Constants32::Pi / 48.f);
@@ -176,18 +163,14 @@ int main()
 	Light1->SetPosition(vec3f(0, 6, 0));
 	RenderPass->AddLight(Light1);
 
+	HBAO->DepthTexture = SceneDepth;
+	HBAO->Camera = Camera;
+	HBAO->MetersToViewSpaceUnits = 3.28084f;
+
 
 	///////////////
 	// Main Loop //
 	///////////////
-
-	GFSDK_SSAO_Parameters Params;
-	Params.Radius = 2.f;
-	Params.Bias = 0.1f;
-	Params.PowerExponent = 2.f;
-	Params.Blur.Enable = true;
-	Params.Blur.Radius = GFSDK_SSAO_BLUR_RADIUS_4;
-	Params.Blur.Sharpness = 16.f;
 
 	TimeManager->Init(WindowManager);
 	while (WindowManager->Run())
@@ -206,14 +189,10 @@ int main()
 
 			ImGui::Text("HBAO+ Params");
 
-			ImGui::SliderFloat("Radius", &Params.Radius, 0.5f, 6.f);
-			ImGui::SliderFloat("Bias", &Params.Bias, 0.0f, 1.f);
-			bool Enable = Params.Blur.Enable != 0;
-			if (ImGui::Checkbox("Blur", &Enable))
-			{
-				Params.Blur.Enable = Enable;
-			}
-			ImGui::SliderFloat("Blur.Sharpness", &Params.Blur.Sharpness, 0.0f, 16.f);
+			ImGui::SliderFloat("Radius", &HBAO->Radius, 0.5f, 6.f);
+			ImGui::SliderFloat("Bias", &HBAO->Bias, 0.0f, 1.f);
+			ImGui::Checkbox("Blur", &HBAO->Blur);
+			ImGui::SliderFloat("Blur.Sharpness", &HBAO->BlurSharpness, 0.0f, 16.f);
 
 			ImGui::End();
 		}
@@ -224,16 +203,7 @@ int main()
 		SceneManager->DrawAll();
 		BackBuffer->Bind();
 
-		GFSDK_SSAO_InputData_GL Input;
-		Input.DepthData.DepthTextureType = GFSDK_SSAO_HARDWARE_DEPTHS;
-		Input.DepthData.FullResDepthTexture.Target = GL_TEXTURE_2D;
-		Input.DepthData.FullResDepthTexture.TextureId = SceneDepthRaw->Handle;
-		Input.DepthData.ProjectionMatrix.Data = glm::value_ptr(Camera->GetProjectionMatrix());
-		Input.DepthData.ProjectionMatrix.Layout = GFSDK_SSAO_ROW_MAJOR_ORDER;
-		Input.DepthData.MetersToViewSpaceUnits = 3.28084f;
-
-		GFSDK_SSAO_Output_GL Output;
-		status = pAOContext->RenderAO(Input, Params, Output);
+		HBAO->Draw();
 
 		GUIManager->Draw();
 		Window->SwapBuffers();
