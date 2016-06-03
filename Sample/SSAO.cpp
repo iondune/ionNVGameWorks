@@ -103,41 +103,7 @@ int main()
 	CSimpleMesh * PlaneMesh = CGeometryCreator::CreatePlane(vec2f(100.f));
 
 	SharedPointer<IShaderProgram> GeometryShader = AssetManager->LoadShader("Geometry");
-	SharedPointer<IShaderProgram> SSAOShader = AssetManager->LoadShader("SSAO");
 	SharedPointer<IShaderProgram> QuadCopyShader = AssetManager->LoadShader("QuadCopy");
-
-
-	std::uniform_real_distribution<float> randomFloats(0.0, 1.0); // generates random floats between 0.0 and 1.0
-	std::default_random_engine generator;
-
-	// Sample kernel
-	std::vector<vec3f> ssaoKernel;
-	for (uint i = 0; i < 64; ++i)
-	{
-		vec3f sample(randomFloats(generator) * 2 - 1, randomFloats(generator) * 2 - 1, randomFloats(generator) * 0.9f + 0.1f);
-		sample.Normalize();
-		sample *= randomFloats(generator);
-		float scale = float(i) / 64.f;
-
-		// Scale samples s.t. they're more aligned to center of kernel
-		scale = lerp(0.1f, 1.0f, scale * scale);
-		sample *= scale;
-		ssaoKernel.push_back(sample);
-	}
-
-	// Noise texture
-	std::vector<float> NoiseData;
-	uint const NoiseTexSize = 4;
-	for (uint i = 0; i < NoiseTexSize * NoiseTexSize; i++)
-	{
-		NoiseData.push_back(randomFloats(generator) * 2 - 1);
-		NoiseData.push_back(randomFloats(generator) * 2 - 1);
-		NoiseData.push_back(0.0);
-	}
-	SharedPointer<ITexture2D> SSAONoise = GraphicsAPI->CreateTexture2D(vec2u(NoiseTexSize), ITexture::EMipMaps::False, ITexture::EFormatComponents::RGB, ITexture::EInternalFormatType::Float16);
-	SSAONoise->Upload(NoiseData.data(), vec2u(NoiseTexSize), ITexture::EFormatComponents::RGB, EScalarType::Float);
-	SSAONoise->SetMinFilter(ITexture::EFilter::Nearest);
-	SSAONoise->SetMagFilter(ITexture::EFilter::Nearest);
 
 
 	////////////////////
