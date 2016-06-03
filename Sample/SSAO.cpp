@@ -23,7 +23,7 @@ float lerp(float const a, float const b, float const f)
 	return a + f * (b - a);
 }
 
-GFSDK_SSAO_GLFunctions ionGetNVGLFunctions();
+GFSDK_SSAO_GLFunctions ionGLFunctions();
 
 
 int main()
@@ -64,7 +64,7 @@ int main()
 	CustomHeap.delete_ = ::operator delete;
 
 	GFSDK_SSAO_Status status;
-	GFSDK_SSAO_GLFunctions functions = ionGetNVGLFunctions();
+	GFSDK_SSAO_GLFunctions functions = ionGLFunctions();
 	GFSDK_SSAO_Context_GL* pAOContext = nullptr;
 	status = GFSDK_SSAO_CreateContext_GL(&pAOContext, &functions, &CustomHeap);
 	assert(status == GFSDK_SSAO_OK);

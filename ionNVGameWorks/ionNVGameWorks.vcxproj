@@ -10,11 +10,22 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ionGLFunctions.cpp" />
+    <ClCompile Include="HBAO.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="HBAO.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{23BCC585-AEA7-4491-84EC-9A5DC1828AE5}</ProjectGuid>
   </PropertyGroup>
   <ImportGroup Label="PropertySheets">
     <Import Project="$(VisualStudioDir)\Projects\ionEngine\Properties\Library.props" />
   </ImportGroup>
+  <PropertyGroup>
+    <IncludePath>C:\HBAOPlus\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\HBAOPlus\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

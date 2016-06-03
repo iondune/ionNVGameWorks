@@ -19,14 +19,21 @@
   <PropertyGroup>
     <IncludePath>C:\HBAOPlus\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\HBAOPlus\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath Condition="'$(Configuration)'=='Debug'">
+      ;$(SolutionDir)\x64\Debug;
+      ;$(LibraryPath);
+    </LibraryPath>
+    <LibraryPath Condition="'$(Configuration)'=='Release'">
+      ;$(SolutionDir)\x64\Release;
+      ;$(LibraryPath);
+    </LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Platform)'=='x64'">
     <Link>
-      <AdditionalDependencies>GFSDK_SSAO_GL.win64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>GFSDK_SSAO_GL.win64.lib;ionNVGameWorks.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ionGetNVGLFunctions.cpp" />
     <ClCompile Include="SSAO.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

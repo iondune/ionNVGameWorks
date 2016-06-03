@@ -76,7 +76,7 @@ void GFSDK_SSAO_STDCALL NVglShaderSource(GLuint shader, GLsizei count, const GLc
 	glad_glShaderSource(shader, count, (const GLchar **) m_strings, lengths);
 }
 
-GFSDK_SSAO_GLFunctions ionGetNVGLFunctions()
+GFSDK_SSAO_GLFunctions ionGLFunctions()
 {
 	GFSDK_SSAO_GLFunctions functions;
 

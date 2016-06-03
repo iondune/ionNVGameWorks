@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ionNVGameWorks", "ionNVGameWorks\ionNVGameWorks.vcxproj", "{23BCC585-AEA7-4491-84EC-9A5DC1828AE5}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sample", "Sample\Sample.vcxproj", "{8545BC50-80AA-4780-A62F-349A423EC2C6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{23BCC585-AEA7-4491-84EC-9A5DC1828AE5} = {23BCC585-AEA7-4491-84EC-9A5DC1828AE5}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
