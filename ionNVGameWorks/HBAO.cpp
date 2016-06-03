@@ -46,6 +46,17 @@ namespace ion
 			Input.DepthData.ProjectionMatrix.Layout = GFSDK_SSAO_ROW_MAJOR_ORDER;
 			Input.DepthData.MetersToViewSpaceUnits = MetersToViewSpaceUnits;
 
+			if (NormalTexture)
+			{
+				SharedPointer<ion::Graphics::GL::CTexture2D> NormalTextureRaw = std::dynamic_pointer_cast<ion::Graphics::GL::CTexture2D>(NormalTexture);
+
+				Input.NormalData.Enable = true;
+				Input.NormalData.FullResNormalTexture.Target = GL_TEXTURE_2D;
+				Input.NormalData.FullResNormalTexture.TextureId = NormalTextureRaw->Handle;
+				Input.NormalData.WorldToViewMatrix.Data = glm::value_ptr(Camera->GetViewMatrix());
+				Input.NormalData.WorldToViewMatrix.Layout = GFSDK_SSAO_ROW_MAJOR_ORDER;
+			}
+
 			GFSDK_SSAO_Output_GL Output;
 			GFSDK_SSAO_Status status;
 

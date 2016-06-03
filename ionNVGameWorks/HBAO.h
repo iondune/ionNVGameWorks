@@ -20,6 +20,7 @@ namespace ion
 			void Draw();
 
 			SharedPointer<ion::Graphics::ITexture2D> DepthTexture;
+			SharedPointer<ion::Graphics::ITexture2D> NormalTexture;
 			ion::Scene::CPerspectiveCamera * Camera = nullptr;
 
 			float Radius = 2.f;

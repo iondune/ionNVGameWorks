@@ -195,6 +195,19 @@ int main()
 			ImGui::Checkbox("Blur", &HBAO->Blur);
 			ImGui::SliderFloat("Blur.Sharpness", &HBAO->BlurSharpness, 0.0f, 16.f);
 
+			static bool Normals = false;
+			if (ImGui::Checkbox("Normals", & Normals))
+			{
+				if (Normals)
+				{
+					HBAO->NormalTexture = SceneNormal;
+				}
+				else
+				{
+					HBAO->NormalTexture = nullptr;
+				}
+			}
+
 			ImGui::End();
 		}
 
