@@ -191,6 +191,7 @@ int main()
 
 			ImGui::SliderFloat("Radius", &HBAO->Radius, 0.5f, 6.f);
 			ImGui::SliderFloat("Bias", &HBAO->Bias, 0.0f, 1.f);
+			ImGui::SliderFloat("Power", &HBAO->PowerExponent, 0.1f, 4.f);
 			ImGui::Checkbox("Blur", &HBAO->Blur);
 			ImGui::SliderFloat("Blur.Sharpness", &HBAO->BlurSharpness, 0.0f, 16.f);
 
