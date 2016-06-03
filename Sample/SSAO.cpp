@@ -172,8 +172,6 @@ int main()
 		RenderPass->AddSceneObject(PlaneObject);
 	}
 
-	float SSAORadius = 1.0f;
-
 	CPointLight * Light1 = new CPointLight();
 	Light1->SetPosition(vec3f(0, 6, 0));
 	RenderPass->AddLight(Light1);
@@ -182,6 +180,14 @@ int main()
 	///////////////
 	// Main Loop //
 	///////////////
+
+	GFSDK_SSAO_Parameters Params;
+	Params.Radius = 2.f;
+	Params.Bias = 0.1f;
+	Params.PowerExponent = 2.f;
+	Params.Blur.Enable = true;
+	Params.Blur.Radius = GFSDK_SSAO_BLUR_RADIUS_4;
+	Params.Blur.Sharpness = 16.f;
 
 	TimeManager->Init(WindowManager);
 	while (WindowManager->Run())
@@ -198,7 +204,16 @@ int main()
 
 			ImGui::Separator();
 
-			ImGui::SliderFloat("SSAO Radius", &SSAORadius, 0.1f, 20.f);
+			ImGui::Text("HBAO+ Params");
+
+			ImGui::SliderFloat("Radius", &Params.Radius, 0.5f, 6.f);
+			ImGui::SliderFloat("Bias", &Params.Bias, 0.0f, 1.f);
+			bool Enable = Params.Blur.Enable != 0;
+			if (ImGui::Checkbox("Blur", &Enable))
+			{
+				Params.Blur.Enable = Enable;
+			}
+			ImGui::SliderFloat("Blur.Sharpness", &Params.Blur.Sharpness, 0.0f, 16.f);
 
 			ImGui::End();
 		}
@@ -216,14 +231,6 @@ int main()
 		Input.DepthData.ProjectionMatrix.Data = glm::value_ptr(Camera->GetProjectionMatrix());
 		Input.DepthData.ProjectionMatrix.Layout = GFSDK_SSAO_ROW_MAJOR_ORDER;
 		Input.DepthData.MetersToViewSpaceUnits = 3.28084f;
-
-		GFSDK_SSAO_Parameters Params;
-		Params.Radius = 2.f;
-		Params.Bias = 0.1f;
-		Params.PowerExponent = 2.f;
-		Params.Blur.Enable = true;
-		Params.Blur.Radius = GFSDK_SSAO_BLUR_RADIUS_4;
-		Params.Blur.Sharpness = 16.f;
 
 		GFSDK_SSAO_Output_GL Output;
 		status = pAOContext->RenderAO(Input, Params, Output);
