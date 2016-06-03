@@ -47,7 +47,7 @@ int main()
 	SceneManager->Init(GraphicsAPI);
 	AssetManager->Init(GraphicsAPI);
 
-	CWindow * Window = WindowManager->CreateWindow(vec2i(1600, 900), "DemoApplication", EWindowType::Windowed);
+	CWindow * Window = WindowManager->CreateWindow(vec2i(1600, 900), "Nvidia GameWorks HABO+ ionEngine Sample", EWindowType::Windowed);
 
 	GUIManager->Init(Window);
 
@@ -148,17 +148,12 @@ int main()
 	RenderPass->SetRenderTarget(FrameBuffer);
 	SceneManager->AddRenderPass(RenderPass);
 
-	//CRenderPass * PostProcess = new CRenderPass(Context);
-	//PostProcess->SetRenderTarget(BackBuffer);
-	//SceneManager->AddRenderPass(PostProcess);
-
 	CPerspectiveCamera * Camera = new CPerspectiveCamera(Window->GetAspectRatio());
 	Camera->SetPosition(vec3f(0, 3, -5));
 	Camera->SetFocalLength(0.4f);
 	Camera->SetNearPlane(0.1f);
 	Camera->SetFarPlane(50.f);
 	RenderPass->SetActiveCamera(Camera);
-	//PostProcess->SetActiveCamera(Camera);
 
 	CCameraController * Controller = new CCameraController(Camera);
 	Controller->SetTheta(15.f * Constants32::Pi / 48.f);
@@ -202,11 +197,6 @@ int main()
 	Sphere4->GetMaterial().Diffuse *= color3f(0.9f, 1, 1);
 	RenderPass->AddSceneObject(Sphere4);
 
-	//CSimpleMeshSceneObject * PlaneObject = new CSimpleMeshSceneObject();
-	//PlaneObject->SetMesh(PlaneMesh);
-	//PlaneObject->SetShader(GeometryShader);
-	//RenderPass->AddSceneObject(PlaneObject);
-
 	vector<CSimpleMesh *> Meshes = CGeometryCreator::LoadOBJFile("terrain.obj");
 	for (auto Mesh : Meshes)
 	{
@@ -217,19 +207,6 @@ int main()
 	}
 
 	float SSAORadius = 1.0f;
-
-	//CSimpleMeshSceneObject * PostProcessObject = new CSimpleMeshSceneObject();
-	//PostProcessObject->SetMesh(CGeometryCreator::CreateScreenTriangle());
-	//PostProcessObject->SetShader(SSAOShader);
-	//PostProcessObject->SetTexture("gPositionDepth", ScenePosition);
-	//PostProcessObject->SetTexture("gNormal", SceneNormal);
-	//PostProcessObject->SetTexture("gPositionDepth", ScenePosition);
-	//PostProcessObject->SetTexture("texNoise", SSAONoise);
-	//PostProcessObject->SetUniform("uTanHalfFOV", CUniform<float>(Tan(Camera->GetFieldOfView() / 2.f)));
-	//PostProcessObject->SetUniform("uAspectRatio", CUniform<float>(Window->GetAspectRatio()));
-	//PostProcessObject->SetUniform("samples[0]", CUniform<vector<vec3f>>(ssaoKernel));
-	//PostProcessObject->SetUniform("radius", std::make_shared<CUniformReference<float>>(&SSAORadius));
-	//PostProcess->AddSceneObject(PostProcessObject);
 
 	CPointLight * Light1 = new CPointLight();
 	Light1->SetPosition(vec3f(0, 6, 0));
@@ -273,9 +250,6 @@ int main()
 		Input.DepthData.ProjectionMatrix.Data = glm::value_ptr(Camera->GetProjectionMatrix());
 		Input.DepthData.ProjectionMatrix.Layout = GFSDK_SSAO_ROW_MAJOR_ORDER;
 		Input.DepthData.MetersToViewSpaceUnits = 3.28084f;
-		//GFSDK_SSAO_InputViewport Viewport;
-		//Viewport.Enable = false;
-		//Input.DepthData.Viewport = Viewport;
 
 		GFSDK_SSAO_Parameters Params;
 		Params.Radius = 2.f;
@@ -286,7 +260,6 @@ int main()
 		Params.Blur.Sharpness = 16.f;
 
 		GFSDK_SSAO_Output_GL Output;
-		//Output.OutputFBO = 0;
 		status = pAOContext->RenderAO(Input, Params, Output);
 
 		GUIManager->Draw();
