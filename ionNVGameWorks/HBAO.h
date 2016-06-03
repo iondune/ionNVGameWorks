@@ -30,6 +30,11 @@ namespace ion
 			float BlurSharpness = 16.f;
 			float MetersToViewSpaceUnits = 1.f;
 
+			bool ForegroundEnable = false;
+			float ForegroundViewDepth = 0.f;
+			bool BackgroundEnable = false;
+			float BackgroundViewDepth = 100.f;
+
 		protected:
 
 			GFSDK_SSAO_Context_GL * Context = nullptr;

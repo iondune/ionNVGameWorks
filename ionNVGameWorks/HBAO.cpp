@@ -34,9 +34,16 @@ namespace ion
 			Params.Radius = Radius;
 			Params.Bias = Bias;
 			Params.PowerExponent = PowerExponent;
+
 			Params.Blur.Enable = Blur;
 			Params.Blur.Radius = GFSDK_SSAO_BLUR_RADIUS_4;
 			Params.Blur.Sharpness = BlurSharpness;
+
+			Params.ForegroundAO.Enable = ForegroundEnable;
+			Params.ForegroundAO.ForegroundViewDepth = ForegroundViewDepth;
+
+			Params.BackgroundAO.Enable = BackgroundEnable;
+			Params.BackgroundAO.BackgroundViewDepth = BackgroundViewDepth;
 
 			GFSDK_SSAO_InputData_GL Input;
 			Input.DepthData.DepthTextureType = GFSDK_SSAO_HARDWARE_DEPTHS;
