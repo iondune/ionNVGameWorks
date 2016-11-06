@@ -47,7 +47,7 @@ namespace ion
 			Params.BackgroundAO.BackgroundViewDepth = BackgroundViewDepth;
 
 			GFSDK_SSAO_InputData_GL Input;
-			Input.DepthData.DepthTextureType = GFSDK_SSAO_VIEW_DEPTHS;
+			Input.DepthData.DepthTextureType = GFSDK_SSAO_HARDWARE_DEPTHS;
 			Input.DepthData.FullResDepthTexture.Target = GL_TEXTURE_2D;
 			Input.DepthData.FullResDepthTexture.TextureId = DepthTextureRaw->Handle;
 			Input.DepthData.ProjectionMatrix.Data = glm::value_ptr(Camera->GetProjectionMatrix());
