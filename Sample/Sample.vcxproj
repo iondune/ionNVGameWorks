@@ -15,29 +15,9 @@
   </PropertyGroup>
   <ImportGroup Label="PropertySheets">
     <Import Project="$(VisualStudioDir)\Projects\ionEngine\Properties\Application.props" />
+    <Import Project="$(VisualStudioDir)\Projects\ionNVGameWorks\Properties\NVGameWorksInclude.props" />
+    <Import Project="$(VisualStudioDir)\Projects\ionNVGameWorks\Properties\NVGameWorksBuild.props" />
   </ImportGroup>
-  <PropertyGroup>
-    <IncludePath>
-      ;C:\HBAOPlus\include;
-      ;$(SolutionDir)\ionNVGameWorks;
-      ;$(IncludePath);
-    </IncludePath>
-    <IncludePath>;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\HBAOPlus\lib;$(LibraryPath)</LibraryPath>
-    <LibraryPath Condition="'$(Configuration)'=='Debug'">
-      ;$(SolutionDir)\x64\Debug;
-      ;$(LibraryPath);
-    </LibraryPath>
-    <LibraryPath Condition="'$(Configuration)'=='Release'">
-      ;$(SolutionDir)\x64\Release;
-      ;$(LibraryPath);
-    </LibraryPath>
-  </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Platform)'=='x64'">
-    <Link>
-      <AdditionalDependencies>GFSDK_SSAO_GL.win64.lib;ionNVGameWorks.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="SSAO.cpp" />
   </ItemGroup>
