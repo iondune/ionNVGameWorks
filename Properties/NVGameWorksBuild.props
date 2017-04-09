@@ -11,7 +11,7 @@
       ;$(LibraryPath);
     </LibraryPath>
     <LibraryPath Condition="'$(Configuration)'=='Release'">
-      ;$(VisualStudioDir)\Projects\ionNVGameWorks\x64\Debug;
+      ;$(VisualStudioDir)\Projects\ionNVGameWorks\x64\Release;
       ;$(LibraryPath);
     </LibraryPath>
   </PropertyGroup>
