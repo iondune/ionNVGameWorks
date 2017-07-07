@@ -88,8 +88,8 @@ int main()
 	CSimpleMesh * SphereMesh = CGeometryCreator::CreateSphere();
 	CSimpleMesh * PlaneMesh = CGeometryCreator::CreatePlane(vec2f(100.f));
 
-	SharedPointer<IShaderProgram> GeometryShader = AssetManager->LoadShader("Geometry");
-	SharedPointer<IShaderProgram> QuadCopyShader = AssetManager->LoadShader("QuadCopy");
+	SharedPointer<IShader> GeometryShader = AssetManager->LoadShader("Geometry");
+	SharedPointer<IShader> QuadCopyShader = AssetManager->LoadShader("QuadCopy");
 
 
 	////////////////////
