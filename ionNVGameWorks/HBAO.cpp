@@ -3,11 +3,13 @@
 
 #include <ionGraphicsGL/CTexture.h>
 #include <ionGraphicsGL/CFrameBuffer.h>
-#include <GFSDK_SSAO.h>
 #include <glm/gtc/type_ptr.hpp>
 
+#ifdef ION_CONFIG_WINDOWS
+#include <GFSDK_SSAO.h>
 
 GFSDK_SSAO_GLFunctions ionGLFunctions();
+#endif
 
 
 namespace ion
@@ -17,6 +19,7 @@ namespace ion
 
 		void HBAO::Init()
 		{
+#ifdef ION_CONFIG_WINDOWS
 			GFSDK_SSAO_CustomHeap CustomHeap;
 			CustomHeap.new_ = ::operator new;
 			CustomHeap.delete_ = ::operator delete;
@@ -25,10 +28,12 @@ namespace ion
 			GFSDK_SSAO_GLFunctions functions = ionGLFunctions();
 			status = GFSDK_SSAO_CreateContext_GL(&Context, &functions, &CustomHeap);
 			assert(status == GFSDK_SSAO_OK);
+#endif
 		}
 
 		void HBAO::Draw()
 		{
+#ifdef ION_CONFIG_WINDOWS
 			SharedPointer<ion::Graphics::GL::CTexture2D> DepthTextureRaw = std::dynamic_pointer_cast<ion::Graphics::GL::CTexture2D>(DepthTexture);
 
 			GFSDK_SSAO_Parameters Params;
@@ -75,6 +80,7 @@ namespace ion
 
 			GFSDK_SSAO_Status status;
 			status = Context->RenderAO(Input, Params, Output);
+#endif
 		}
 
 	}
