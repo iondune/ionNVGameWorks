@@ -80,6 +80,12 @@ namespace ion
 
 			GFSDK_SSAO_Status status;
 			status = Context->RenderAO(Input, Params, Output);
+#else
+			if (FrameBuffer)
+			{
+				FrameBuffer->SetClearColor(color4f(1.0));
+				FrameBuffer->ClearColor();
+			}
 #endif
 		}
 
