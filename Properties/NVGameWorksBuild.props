@@ -18,7 +18,7 @@
 
   <ItemDefinitionGroup Condition="'$(Platform)'=='x64'">
     <Link>
-      <AdditionalDependencies>GFSDK_SSAO_GL.win64.lib;ionNVGameWorks.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>GFSDK_SSAO_D3D11.win64.lib;ionNVGameWorks.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
 

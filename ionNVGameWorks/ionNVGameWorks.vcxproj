@@ -11,7 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ionGLFunctions.cpp" />
     <ClCompile Include="HBAO.cpp" />
   </ItemGroup>
   <ItemGroup>

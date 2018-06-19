@@ -4,7 +4,7 @@
 #include <ionEngine.h>
 
 
-class GFSDK_SSAO_Context_GL;
+class GFSDK_SSAO_Context_D3D11;
 
 namespace ion
 {
@@ -16,7 +16,7 @@ namespace ion
 
 		public:
 
-			void Init();
+			void Init(IGraphicsImplementation * Implementation);
 			void Draw();
 
 			SharedPointer<ion::Graphics::ITexture2D> DepthTexture;
@@ -39,7 +39,8 @@ namespace ion
 
 		protected:
 
-			GFSDK_SSAO_Context_GL * Context = nullptr;
+			IGraphicsImplementation * Implementation = nullptr;
+			GFSDK_SSAO_Context_D3D11 * Context = nullptr;
 
 		};
 

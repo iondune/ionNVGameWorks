@@ -1,7 +1,7 @@
 
 #include <ionWindow.h>
 #include <ionGraphics.h>
-#include <ionGraphicsGL.h>
+#include <ionGraphicsD3D11.h>
 #include <ionScene.h>
 #include <ionApplication.h>
 #include <ionGUI.h>
@@ -36,7 +36,7 @@ int main()
 	SingletonPointer<ion::Nvidia::HBAO> HBAO;
 
 
-	GraphicsAPI->Init(new Graphics::COpenGLImplementation());
+	GraphicsAPI->Init(new Graphics::CD3D11Implementation());
 	WindowManager->Init(GraphicsAPI);
 	TimeManager->Init(WindowManager);
 	SceneManager->Init(GraphicsAPI);
@@ -44,7 +44,7 @@ int main()
 
 	CWindow * Window = WindowManager->CreateWindow(vec2i(1600, 900), "Nvidia GameWorks HABO+ ionEngine Sample", EWindowType::Windowed);
 
-	GUIManager->Init(Window);
+	GUIManager->Init(Window, GraphicsAPI->GetImplementation());
 
 	AssetManager->AddAssetPath("Assets/");
 	AssetManager->SetShaderPath("Shaders/");
@@ -54,7 +54,7 @@ int main()
 	SharedPointer<IRenderTarget> BackBuffer = Context->GetBackBuffer();
 	BackBuffer->SetClearColor(color3f(0.3f));
 
-	HBAO->Init();
+	HBAO->Init(GraphicsAPI->GetImplementation());
 
 	SharedPointer<IFrameBuffer> FrameBuffer = Context->CreateFrameBuffer();
 
