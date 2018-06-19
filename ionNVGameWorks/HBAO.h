@@ -23,7 +23,7 @@ namespace ion
 			SharedPointer<ion::Graphics::ITexture2D> NormalTexture;
 			ion::Scene::CPerspectiveCamera * Camera = nullptr;
 
-			SharedPointer<ion::Graphics::IRenderTarget> FrameBuffer;
+			SharedPointer<ion::Graphics::IRenderTarget> OutputTarget;
 
 			float Radius = 2.f;
 			float Bias = 0.1f;

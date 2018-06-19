@@ -58,7 +58,7 @@ int main()
 
 	SharedPointer<IFrameBuffer> FrameBuffer = Context->CreateFrameBuffer();
 
-	SharedPointer<ITexture2D> SceneColor = GraphicsAPI->CreateTexture2D(Window->GetSize(), ITexture::EMipMaps::False, ITexture::EFormatComponents::RGB, ITexture::EInternalFormatType::Fix8);
+	SharedPointer<ITexture2D> SceneColor = GraphicsAPI->CreateTexture2D(Window->GetSize(), ITexture::EMipMaps::False, ITexture::EFormatComponents::RGBA, ITexture::EInternalFormatType::Fix8);
 	SceneColor->SetMinFilter(ITexture::EFilter::Nearest);
 	SceneColor->SetMagFilter(ITexture::EFilter::Nearest);
 	SceneColor->SetWrapMode(ITexture::EWrapMode::Clamp);
@@ -66,11 +66,11 @@ int main()
 	ScenePosition->SetMinFilter(ITexture::EFilter::Nearest);
 	ScenePosition->SetMagFilter(ITexture::EFilter::Nearest);
 	ScenePosition->SetWrapMode(ITexture::EWrapMode::Clamp);
-	SharedPointer<ITexture2D> SceneNormal = GraphicsAPI->CreateTexture2D(Window->GetSize(), ITexture::EMipMaps::False, ITexture::EFormatComponents::RGB, ITexture::EInternalFormatType::Float16);
+	SharedPointer<ITexture2D> SceneNormal = GraphicsAPI->CreateTexture2D(Window->GetSize(), ITexture::EMipMaps::False, ITexture::EFormatComponents::RGBA, ITexture::EInternalFormatType::Float16);
 	SceneNormal->SetMinFilter(ITexture::EFilter::Nearest);
 	SceneNormal->SetMagFilter(ITexture::EFilter::Nearest);
 	SceneNormal->SetWrapMode(ITexture::EWrapMode::Clamp);
-	SharedPointer<ITexture2D> SceneDepth = GraphicsAPI->CreateTexture2D(Window->GetSize(), ITexture::EMipMaps::False, ITexture::EFormatComponents::R, ITexture::EInternalFormatType::Depth);
+	SharedPointer<ITexture2D> SceneDepth = GraphicsAPI->CreateTexture2D(Window->GetSize(), ITexture::EMipMaps::False, ITexture::EFormatComponents::R, ITexture::EInternalFormatType::DepthStencil);
 	FrameBuffer->AttachColorTexture(SceneColor, 0);
 	FrameBuffer->AttachColorTexture(ScenePosition, 1);
 	FrameBuffer->AttachColorTexture(SceneNormal, 2);
@@ -163,6 +163,7 @@ int main()
 	Light1->SetPosition(vec3f(0, 6, 0));
 	RenderPass->AddLight(Light1);
 
+	HBAO->OutputTarget = BackBuffer;
 	HBAO->DepthTexture = SceneDepth;
 	HBAO->Camera = Camera;
 	HBAO->MetersToViewSpaceUnits = 3.28084f;
@@ -213,10 +214,9 @@ int main()
 
 		FrameBuffer->ClearColorAndDepth();
 		BackBuffer->ClearColorAndDepth();
-
 		SceneManager->DrawAll();
-		BackBuffer->Bind();
 
+		BackBuffer->Bind();
 		HBAO->Draw();
 
 		GUIManager->Draw();

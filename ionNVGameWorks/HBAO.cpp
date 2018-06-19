@@ -73,10 +73,10 @@ namespace ion
 
 
 			GFSDK_SSAO_Output_D3D11 Output;
-			if (FrameBuffer)
+			if (OutputTarget)
 			{
-				SharedPointer<ion::Graphics::D3D11::CFrameBuffer> FrameBufferRaw = std::dynamic_pointer_cast<ion::Graphics::D3D11::CFrameBuffer>(FrameBuffer);
-				Output.pRenderTargetView = FrameBufferRaw->RenderTargetView;
+				SharedPointer<ion::Graphics::D3D11::CRenderTarget> FrameBufferRaw = std::dynamic_pointer_cast<ion::Graphics::D3D11::CRenderTarget>(OutputTarget);
+				Output.pRenderTargetView = FrameBufferRaw->RenderTargetViews[0];
 				Output.Blend.Mode = GFSDK_SSAO_OVERWRITE_RGB;
 			}
 
@@ -84,7 +84,10 @@ namespace ion
 			Graphics::CD3D11Implementation * D3D11 = dynamic_cast<Graphics::CD3D11Implementation *>(Implementation);
 
 			GFSDK_SSAO_Status status = Context->RenderAO(D3D11->GetImmediateContext(), Input, Params, Output);
-			assert(status == GFSDK_SSAO_OK);
+			if (status != GFSDK_SSAO_OK)
+			{
+				Log::Error("RenderAO Failed.");
+			}
 
 #else
 			if (FrameBuffer)
