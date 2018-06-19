@@ -3,8 +3,11 @@
 
 #include <ionGraphicsD3D11/CTexture.h>
 #include <ionGraphicsD3D11/CFrameBuffer.h>
-#include <GFSDK_SSAO.h>
 #include <glm/gtc/type_ptr.hpp>
+
+#ifdef ION_CONFIG_WINDOWS
+#include <GFSDK_SSAO.h>
+#endif
 
 
 namespace ion
@@ -16,6 +19,8 @@ namespace ion
 		{
 			this->Implementation = Implementation;
 
+#ifdef ION_CONFIG_WINDOWS
+
 			GFSDK_SSAO_CustomHeap CustomHeap;
 			CustomHeap.new_ = ::operator new;
 			CustomHeap.delete_ = ::operator delete;
@@ -25,10 +30,13 @@ namespace ion
 			GFSDK_SSAO_Status status;
 			status = GFSDK_SSAO_CreateContext_D3D11(D3D11->GetDevice(), & Context, & CustomHeap);
 			assert(status == GFSDK_SSAO_OK);
+
+#endif
 		}
 
 		void HBAO::Draw()
 		{
+#ifdef ION_CONFIG_WINDOWS
 			SharedPointer<ion::Graphics::D3D11::CTexture2D> DepthTextureRaw = std::dynamic_pointer_cast<ion::Graphics::D3D11::CTexture2D>(DepthTexture);
 
 			GFSDK_SSAO_Parameters Params;
@@ -77,6 +85,14 @@ namespace ion
 
 			GFSDK_SSAO_Status status = Context->RenderAO(D3D11->GetImmediateContext(), Input, Params, Output);
 			assert(status == GFSDK_SSAO_OK);
+
+#else
+			if (FrameBuffer)
+			{
+				FrameBuffer->SetClearColor(color4f(1.0));
+				FrameBuffer->ClearColor();
+			}
+#endif
 		}
 
 	}
